@@ -1,0 +1,8 @@
+<h1>New Appointment</h1>
+
+<%= form_for @appointment do |f| %>
+  <%= f.text_field :procedure %>
+  <%= f.select :number_of_rooms, @room_options, {}, class:"number_of_rooms" %>
+  <%= f.collection_select :cptcodes, @cptcodes, :name, :name, {include_hidden: false}, class:"cpts", multiple:true %>
+  <%= f.submit %>
+<% end %>
