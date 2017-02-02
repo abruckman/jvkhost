@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170129222358) do
+ActiveRecord::Schema.define(version: 20170202062605) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -19,6 +19,7 @@ ActiveRecord::Schema.define(version: 20170129222358) do
     t.string "number_of_rooms"
     t.string "procedure"
     t.string "cptstring"
+    t.string "result"
   end
 
   create_table "appointments_cptcodes", id: false, force: :cascade do |t|

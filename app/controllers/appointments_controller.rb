@@ -15,7 +15,7 @@ class AppointmentsController < ApplicationController
 
     @appointment = Appointment.new ({procedure: appointment_params[:procedure], number_of_rooms: appointment_params[:number_of_rooms], cptstring: cptstring})
 
-    @appointment.save
+    # @appointment.save
     # p @appointment
     #
     # cpt_ids = appointment_params[:cptcodes]
@@ -23,7 +23,7 @@ class AppointmentsController < ApplicationController
     #   cpt = Cptcode.find(cpt_id)
     #   @appointment.cptcodes << cpt
     # end
-    p @appointment
+    # p @appointment
 
     app_hash = {pocedure: @appointment.procedure, number_of_rooms: @appointment.number_of_rooms, cptstring: @appointment.cptstring}
 
@@ -32,12 +32,17 @@ class AppointmentsController < ApplicationController
       f.write(app_hash.to_json)
     end
 
-    answer = `/Users/andrewbruckman/anaconda/bin/python PicklePull.py public/temp.json`
+    answer = `#{PYTHON_PATH} PicklePull.py public/temp.json`
 
-    p answer
+    @appointment.result = answer
+    @appointment.save
     p answer
 
-    redirect_to '/'
+    redirect_to appointment_path(@appointment)
+  end
+
+  def show
+    @appointment = Appointment.find(params[:id])
   end
 
   private
