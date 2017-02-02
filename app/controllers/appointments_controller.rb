@@ -32,6 +32,11 @@ class AppointmentsController < ApplicationController
       f.write(app_hash.to_json)
     end
 
+    answer = `/Users/andrewbruckman/anaconda/bin/python PicklePull.py public/temp.json`
+
+    p answer
+    p answer
+
     redirect_to '/'
   end
 
