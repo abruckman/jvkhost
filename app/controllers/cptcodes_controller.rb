@@ -6,6 +6,6 @@ class CptcodesController < ApplicationController
       code.save
     end
 
-    redirect_to "appointments#new"
+    redirect_to "/"
   end
 end
