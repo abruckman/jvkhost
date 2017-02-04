@@ -1,6 +1,7 @@
 class AppointmentsController < ApplicationController
   def new
     @appointment = Appointment.new
+    @procedures = ["Nerve Block","Facet Joint Injection", "Lumbar Radiofrequency","Lumbar ESI","Spinal Cord Stimulator", "Joint Injection , other" , "Lumbar Medial Branch Block", "Cervical/Thoracic Medial Branch Block","Cervical/Thoracic ESI","Cervical/Thoracic Radiofrequency"]
     @cptcodes = Cptcode.all
     @room_options= ["One room", "Two Rooms", "unknown"]
   end
@@ -11,21 +12,9 @@ class AppointmentsController < ApplicationController
 
     cptstring = cptcodes.join(", ")
     p cptstring
+    app_hash = {procedure: appointment_params[:procedure], number_of_rooms: appointment_params[:number_of_rooms], cptstring: cptstring}
 
-
-    @appointment = Appointment.new ({procedure: appointment_params[:procedure], number_of_rooms: appointment_params[:number_of_rooms], cptstring: cptstring})
-
-    # @appointment.save
-    # p @appointment
-    #
-    # cpt_ids = appointment_params[:cptcodes]
-    # cpt_ids.each do |cpt_id|
-    #   cpt = Cptcode.find(cpt_id)
-    #   @appointment.cptcodes << cpt
-    # end
-    # p @appointment
-
-    app_hash = {pocedure: @appointment.procedure, number_of_rooms: @appointment.number_of_rooms, cptstring: @appointment.cptstring}
+    @appointment = Appointment.new (app_hash)
 
     require 'json'
     File.open("public/temp.json","w") do |f|
@@ -33,12 +22,14 @@ class AppointmentsController < ApplicationController
     end
 
     answer = `#{PYTHON_PATH} PicklePull.py public/temp.json`
+    p answer
 
     @appointment.result = answer
     @appointment.save
-    p answer
-
-    redirect_to appointment_path(@appointment)
+    respond_to do |format|
+      format.js{}
+      format.html {redirect_to appointment_path(@appointment)}
+    end
   end
 
   def show

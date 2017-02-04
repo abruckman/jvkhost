@@ -34,7 +34,7 @@ def jsonInterp(JSONFile, Feature_Columns):
         data = json.load(data_file)
         for i  in data['cptstring'].split(","):
             cptCodes += [i.strip(" ").rstrip(" ")]
-        Procedure= data['pocedure']
+        Procedure= data['procedure']
         Room = data['number_of_rooms']
 
         for num, i in enumerate(Feature_Columns):
