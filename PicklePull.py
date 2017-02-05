@@ -30,7 +30,7 @@ def jsonInterp(JSONFile, Feature_Columns):
         data = json.load(data_file)
         for i  in data['cptstring'].split(","):
             cptCodes += [i.strip(" ").rstrip(" ")]
-        Procedure= data['pocedure']
+        Procedure= data['procedure']
         Room = data['number_of_rooms']
         
         RoomAlg = True
@@ -91,13 +91,13 @@ if __name__ == '__main__':
     JSONFile = sys.argv[1]
     main(JSONFile) 
 
-       
-#JSONFile = 'temp.json' 
+"""       
+JSONFile = 'temp.json' 
 
 
-#main(JSONFile) 
+main(JSONFile) 
 
-
+"""
 
 """
 feature_cols =['63685', '63650', 'Radiofrequency', 'Lumbar Radiofrequency', '64636', '64635', 'ESI', '1r']
