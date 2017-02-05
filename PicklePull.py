@@ -1,5 +1,3 @@
-#! /Users/andrewbruckman/anaconda/bin/python
-
 # -*- coding: utf-8 -*-
 """
 Created on Sat Jan 21 14:25:09 2017
@@ -22,63 +20,82 @@ class EnsembleTranformer(TransformerMixin):
         def fit(self, X, y=None, **fit_params):
             self.model.fit(X, y)
             return self
-
-def PostgressCall():
-    conn = psycopg2.connect("host='localhost' port='5432' dbname='Ekodev' user='bn_openerp' password='fa05844d'")
-
+            
+    
 def jsonInterp(JSONFile, Feature_Columns):
-
+    
     cptCodes = []
     ResultsList = []
-    with open(JSONFile) as data_file:
+    with open(JSONFile) as data_file:    
         data = json.load(data_file)
         for i  in data['cptstring'].split(","):
             cptCodes += [i.strip(" ").rstrip(" ")]
-        Procedure= data['procedure']
+        Procedure= data['pocedure']
         Room = data['number_of_rooms']
-
+        
+        RoomAlg = True
         for num, i in enumerate(Feature_Columns):
-
+            
             if i == '1r':
-                pass
-
+                if Room == "One Room":
+                    ResultsList += [0]
+                elif Room == "Unknown":
+                    ResultsList += [0]
+                    RoomAlg = False
+                else:
+                    ResultsList += [1]
+                    
+                
+            
             elif i[0].isdigit():
                 if i in cptCodes:
                     ResultsList += [1]
                 else:
                     ResultsList += [0]
             else:
-                if i == Procedure:
+                #print Procedure
+                if i == 'ESI' and 'ESI' in Procedure:
                     ResultsList += [1]
-
+                elif i== 'Radiofrequency' and 'Radiofrequency' in Procedure:
+                    ResultsList += [1]
+                elif i== 'Lumbar Radiofrequency' and 'Lumbar Radiofrequency' in Procedure:
+                    ResultsList += [1]
+                    
                 else:
                     ResultsList += [0]
-
-    return np.array(ResultsList)
-
-
-
+                    
+    return np.array(ResultsList)   
+                    
+                
+                
 def main(JSONFile):
-    feature_cols =  ['63685', '63650', 'Radiofrequency', 'Lumbar Radiofrequency', '64635', '64636', 'ESI' ]
-
+    feature_cols =  ['63685', '63650', 'Radiofrequency', 'Lumbar Radiofrequency', '64635', '64636', 'ESI' ]     
+      
     JSONList = jsonInterp(JSONFile,feature_cols)
     #print JSONList
-    algagain = pickle.load( open( "Alg_Improved_Whole_Year3.p", "rb" ) )
+    algagain = pickle.load( open( "MainAlg.p", "rb" ) )
     if algagain.predict(np.array(JSONList)) > 200 or algagain.predict(np.array(JSONList)) < -200:
-        print 34.0
-        return 34.0
+        if '63865' in str(JSONList) and '63650'  in str(JSONList):
+            print 113
+            return 113
+        elif '63650' in str(JSONList) or '63865' in str(JSONList):
+            print 60.2
+            return 60.2
     else:
-        print algagain.predict(np.array(JSONList))[0]
+        #print JSONList
+        print round(algagain.predict(np.array(JSONList))[0],2)
         return algagain.predict(np.array(JSONList))[0]
-
+        
 
 if __name__ == '__main__':
     JSONFile = sys.argv[1]
-    main(JSONFile)
-#JSONFile = 'temp.json'
+    main(JSONFile) 
+
+       
+#JSONFile = 'temp.json' 
 
 
-#print main(JSONFile)
+#main(JSONFile) 
 
 
 
@@ -95,8 +112,8 @@ for i in range(len(OOSDF)):
      print '555'
      pred = main(OOSRow)[0]
      actual = OOSDF['TotalTimeMin'].iloc[i]
-
-
+     
+     
      print pred, actual, pred-  actual
      difflist += [pred - actual]
      diffDict['pred'] += [pred]
