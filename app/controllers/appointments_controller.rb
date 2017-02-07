@@ -22,7 +22,7 @@ class AppointmentsController < ApplicationController
     end
 
     answer = `#{PYTHON_PATH} PicklePull.py public/temp.json`
-    p answer.append
+    p answer
 
     @appointment.result = answer
     @appointment.save
