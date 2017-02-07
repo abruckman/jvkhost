@@ -16,7 +16,7 @@ class EnsembleTranformer(TransformerMixin):
             self.y = y
         def transform(self,X,  **transform_params):
             return np.array([self.model.predict(X)]).T
- # pipeline = feature union of EnsembleTranformer
+
         def fit(self, X, y=None, **fit_params):
             self.model.fit(X, y)
             return self
@@ -33,20 +33,16 @@ def jsonInterp(JSONFile, Feature_Columns):
         Procedure= data['procedure']
         Room = data['number_of_rooms']
         
-        RoomAlg = True
         for num, i in enumerate(Feature_Columns):
             
             if i == '1r':
                 if Room == "One Room":
                     ResultsList += [0]
                 elif Room == "Unknown":
-                    ResultsList += [0]
-                    RoomAlg = False
+                    ResultsList += [1]
                 else:
                     ResultsList += [1]
                     
-                
-            
             elif i[0].isdigit():
                 if i in cptCodes:
                     ResultsList += [1]
@@ -69,65 +65,34 @@ def jsonInterp(JSONFile, Feature_Columns):
                 
                 
 def main(JSONFile):
-    feature_cols =  ['63685', '63650', 'Radiofrequency', 'Lumbar Radiofrequency', '64635', '64636', 'ESI' ]     
+    feature_cols =  ['63685', '63650', 'Radiofrequency', 'Lumbar Radiofrequency', '64635', '64636', 'ESI','1r' ]     
       
     JSONList = jsonInterp(JSONFile,feature_cols)
-    #print JSONList
-    algagain = pickle.load( open( "MainAlg.p", "rb" ) )
+    
+    algagain = pickle.load(open("Alg_Huber_Whole_Year_Room.p", "rb" ) )
     if algagain.predict(np.array(JSONList)) > 200 or algagain.predict(np.array(JSONList)) < -200:
         if '63865' in str(JSONList) and '63650'  in str(JSONList):
+            
             print 113
             return 113
         elif '63650' in str(JSONList) or '63865' in str(JSONList):
-            print 60.2
+            print "60 Minutes 23 Seconds"
             return 60.2
+        else:
+            print "28 Minutes 2 Seconds"
+            return 28
     else:
-        #print JSONList
-        print round(algagain.predict(np.array(JSONList))[0],2)
-        return algagain.predict(np.array(JSONList))[0]
+        value = algagain.predict(np.array(JSONList))[0]
+        print str(int(value)) + " Minutes " + str(int(float("." + str(value-int(value)).split('.')[1]) * 60)) + " Seconds"
+        return value
         
 
 if __name__ == '__main__':
     JSONFile = sys.argv[1]
     main(JSONFile) 
-
-"""       
-JSONFile = 'temp.json' 
-
-
-main(JSONFile) 
-
 """
 
-"""
-feature_cols =['63685', '63650', 'Radiofrequency', 'Lumbar Radiofrequency', '64636', '64635', 'ESI', '1r']
-WholeYearDF = pd.read_csv('WholeYear.csv')
-OOSDF = WholeYearDF#[WholeYearDF['Date'] > '10/03/2016']
+JSON = "temp.json"
+main(JSON)
 
-difflist = []
-diffDict = {'pred':[], 'actual':[] , 'difference':[]}
-for i in range(len(OOSDF)):
-     OOSRow = list(OOSDF[feature_cols].iloc[i])
-     print OOSRow
-     print '555'
-     pred = main(OOSRow)[0]
-     actual = OOSDF['TotalTimeMin'].iloc[i]
-     
-     
-     print pred, actual, pred-  actual
-     difflist += [pred - actual]
-     diffDict['pred'] += [pred]
-     diffDict['actual'] += [actual]
-     diffDict['difference'] += [pred - actual]
-dictDF = pd.DataFrame.from_dict(diffDict)
-dictDF.to_csv("PredVActual.csv")
-diffarray = abs(np.array(difflist))
-print diffarray.mean()
-sqrtsquarederror = np.sqrt(np.square(-np.array(difflist)))
-
-codelist =[]
-for i in WholeYearDF['CPTCode']:
-    print i
-    if 'noCPT' not in i[0]:
-        codelist += [i[0]]
 """
