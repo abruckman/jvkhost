@@ -16,7 +16,7 @@
       </div>
       <div class="form-group">
         <%= f.label :cptcodes, "CPT Codes" %>
-        <%= f.collection_select :cptcodes, @cptcodes, :name, :name, {include_hidden: false}, class:"cpts", multiple:true %>
+        <%= f.select :cptcodes, @cptcodes, {include_hidden: false}, class:"cpts", multiple:true %>
       </div>
       <div class="form-group">
         <%= f.submit class:"btn btn-primary" %>
