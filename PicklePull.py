@@ -1,5 +1,4 @@
 
-
 # -*- coding: utf-8 -*-
 """
 Created on Sat Jan 21 14:25:09 2017
@@ -72,7 +71,7 @@ def main(JSONFile):
       
     JSONList = jsonInterp(JSONFile,feature_cols)
     
-    algagain = pickle.load(open("Alg_Huber_Whole_Year_Room.p", "rb" ) )
+    algagain = pickle.load(open("huber.p", "rb" ) )
     if algagain.predict(np.array(JSONList)) > 200 or algagain.predict(np.array(JSONList)) < -200:
         if '63865' in str(JSONList) and '63650'  in str(JSONList):
             
@@ -93,9 +92,10 @@ def main(JSONFile):
 if __name__ == '__main__':
     JSONFile = sys.argv[1]
     main(JSONFile) 
+"""
 
-
-#JSON = "temp.json"
-#main(JSON)
+JSON = "temp.json"
+main(JSON)
+"""
 
 
