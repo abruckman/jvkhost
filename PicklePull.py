@@ -1,3 +1,4 @@
+
 # -*- coding: utf-8 -*-
 """
 Created on Sat Jan 21 14:25:09 2017
@@ -8,6 +9,7 @@ Created on Sat Jan 21 14:25:09 2017
 import json
 import numpy as np
 from sklearn.base import TransformerMixin
+from sklearn import linear_model
 import pickle
 import sys
 class EnsembleTranformer(TransformerMixin):
@@ -90,9 +92,9 @@ def main(JSONFile):
 if __name__ == '__main__':
     JSONFile = sys.argv[1]
     main(JSONFile) 
-"""
 
-JSON = "temp.json"
-main(JSON)
 
-"""
+#JSON = "temp.json"
+#main(JSON)
+
+
