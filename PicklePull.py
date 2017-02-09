@@ -70,7 +70,7 @@ def main(JSONFile):
     feature_cols =  ['63685', '63650', 'Radiofrequency', 'Lumbar Radiofrequency', '64635', '64636', 'ESI','1r' ]     
       
     JSONList = jsonInterp(JSONFile,feature_cols)
-    
+    print JSONList
     algagain = pickle.load(open("huber.p", "rb" ) )
     if algagain.predict(np.array(JSONList)) > 200 or algagain.predict(np.array(JSONList)) < -200:
         if '63865' in str(JSONList) and '63650'  in str(JSONList):
@@ -88,14 +88,14 @@ def main(JSONFile):
         print str(int(value)) + " Minutes " + str(int(float("." + str(value-int(value)).split('.')[1]) * 60)) + " Seconds"
         return value
         
-
+"""
 if __name__ == '__main__':
     JSONFile = sys.argv[1]
     main(JSONFile) 
 """
 
-JSON = "temp.json"
+JSON = "test.json"
 main(JSON)
-"""
+
 
 
