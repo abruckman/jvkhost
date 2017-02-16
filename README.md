@@ -1,24 +1,18 @@
 # README
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+An application that utilizes machine learning to estimate the length of procedures for medical proffesionals.
 
-Things you may want to cover:
+## Dependencies
 
-* Ruby version
+* Deployed on Ruby 2.4 on Rails 5
 
-* System dependencies
+* utilizes bootstrap 4 and selectize.js on the frontend
 
-* Configuration
+* machine learning on Python in the models.
 
-* Database creation
+## Deployment
 
-* Database initialization
+* deploy to heroku
 
-* How to run the test suite
+* before pushing, ensure that both the Ruby and Python buildpacks are installed.
 
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
