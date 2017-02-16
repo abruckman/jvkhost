@@ -16,3 +16,8 @@ An application that utilizes machine learning to estimate the length of procedur
 
 * before pushing, ensure that both the Ruby and Python buildpacks are installed.
 
+```
+$ heroku buildpacks:add heroku/python
+
+```
+
